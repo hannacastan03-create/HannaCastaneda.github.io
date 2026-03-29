@@ -1,103 +1,618 @@
-// CTR story rendered as inline artifact
-export default function App() {
-  return (
-    <div style={{width:'100%',height:'100vh',border:'none',margin:0,padding:0}}>
-      <iframe
-        srcDoc={`<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CTR: Road to Glory</title>
+<title>CTR: Road to Glory — An Adventure Story</title>
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{--orange:#FF6B00;--yellow:#FFD600;--teal:#00E5FF;--dark:#0A0A1A;--card:#13132A;--border:#2A2A4A;--text:#E8E8FF;--muted:#8888AA;--red:#FF3B5C;--green:#39FF14;}
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{background:var(--dark);color:var(--text);font-family:'Nunito',sans-serif;font-size:16px;line-height:1.7;min-height:100vh;overflow-x:hidden;}
-  body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(180deg,transparent 0px,transparent 48px,rgba(255,214,0,0.04) 48px,rgba(255,214,0,0.04) 52px),radial-gradient(ellipse at 50% 0%,rgba(255,107,0,0.08) 0%,transparent 70%);pointer-events:none;z-index:0;animation:roadScroll 3s linear infinite;}
-  @keyframes roadScroll{from{background-position:0 0;}to{background-position:0 52px;}}
-  #game{position:relative;z-index:1;max-width:700px;margin:0 auto;padding:2rem 1.25rem 4rem;}
-  #header{text-align:center;margin-bottom:2.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);}
-  #header .logo{font-family:'Bangers',cursive;font-size:clamp(2rem,8vw,3.5rem);letter-spacing:3px;background:linear-gradient(135deg,var(--orange),var(--yellow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
-  #header .sub{font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--teal);margin-top:4px;}
-  #progress-wrap{margin-bottom:1.5rem;display:flex;align-items:center;gap:10px;}
-  #progress-bar-bg{flex:1;height:6px;background:var(--border);border-radius:99px;overflow:hidden;}
-  #progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--orange),var(--yellow));border-radius:99px;transition:width 0.5s ease;width:0%;}
-  #progress-label{font-size:11px;color:var(--muted);white-space:nowrap;min-width:60px;text-align:right;}
-  #passage-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;animation:fadeSlide 0.35s ease;}
-  @keyframes fadeSlide{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
-  .passage-tag{display:inline-block;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--orange);border:1px solid rgba(255,107,0,0.3);border-radius:99px;padding:2px 10px;margin-bottom:1rem;}
-  .passage-tag.ending{color:var(--yellow);border-color:rgba(255,214,0,0.3);}
-  .passage-tag.action{color:var(--teal);border-color:rgba(0,229,255,0.3);}
-  #passage-title{font-family:'Bangers',cursive;font-size:clamp(1.5rem,5vw,2.2rem);letter-spacing:1.5px;color:var(--yellow);margin-bottom:1rem;line-height:1.15;}
-  #passage-text{color:var(--text);font-size:15px;line-height:1.8;}
-  #passage-text p{margin-bottom:0.9rem;}
-  #passage-text p:last-child{margin-bottom:0;}
-  #choices{margin-top:1.75rem;display:flex;flex-direction:column;gap:10px;}
-  .choice-btn{background:transparent;border:1px solid var(--border);border-radius:10px;padding:14px 18px;color:var(--text);font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-align:left;transition:all 0.2s;position:relative;padding-left:44px;}
-  .choice-btn::before{content:'▶';position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--orange);font-size:10px;transition:transform 0.2s;}
-  .choice-btn:hover{border-color:var(--orange);background:rgba(255,107,0,0.08);color:var(--yellow);transform:translateX(4px);}
-  .choice-btn:hover::before{transform:translateY(-50%) translateX(3px);}
-  .choice-btn:active{transform:translateX(2px) scale(0.99);}
-  .ending-badge{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:10px;margin-bottom:1.25rem;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
-  .ending-badge.good{background:rgba(57,255,20,0.1);color:var(--green);border:1px solid rgba(57,255,20,0.25);}
-  .ending-badge.neutral{background:rgba(0,229,255,0.1);color:var(--teal);border:1px solid rgba(0,229,255,0.25);}
-  .ending-badge.hollow{background:rgba(255,59,92,0.1);color:var(--red);border:1px solid rgba(255,59,92,0.25);}
-  .ending-badge.endless{background:rgba(255,214,0,0.1);color:var(--yellow);border:1px solid rgba(255,214,0,0.25);}
-  .ending-icon{font-size:20px;}
-  #restart-btn{margin-top:1.5rem;width:100%;padding:14px;background:linear-gradient(135deg,var(--orange),#FF4500);border:none;border-radius:10px;color:white;font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;}
-  #restart-btn:hover{filter:brightness(1.15);transform:translateY(-2px);}
-  #breadcrumb{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem;min-height:22px;}
-  .crumb{font-size:10px;color:var(--muted);background:rgba(255,255,255,0.04);border-radius:99px;padding:2px 8px;}
-  #stats{display:flex;gap:16px;margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--border);flex-wrap:wrap;}
-  .stat{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);}
-  .stat-icon{font-size:14px;}
-  .stat-val{color:var(--yellow);font-weight:700;}
-  @keyframes spin3d{from{transform:rotateY(0deg);}to{transform:rotateY(360deg);}}
-  .trophy-spin{display:inline-block;animation:spin3d 1.5s linear infinite;}
+  :root {
+    --orange: #FF6B00;
+    --yellow: #FFD600;
+    --teal: #00E5FF;
+    --dark: #0A0A1A;
+    --card: #13132A;
+    --border: #2A2A4A;
+    --text: #E8E8FF;
+    --muted: #8888AA;
+    --red: #FF3B5C;
+    --green: #39FF14;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      repeating-linear-gradient(180deg,
+        transparent 0px, transparent 48px,
+        rgba(255,214,0,0.04) 48px, rgba(255,214,0,0.04) 52px
+      ),
+      radial-gradient(ellipse at 50% 0%, rgba(255,107,0,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    animation: roadScroll 3s linear infinite;
+  }
+
+  @keyframes roadScroll {
+    from { background-position: 0 0; }
+    to   { background-position: 0 52px; }
+  }
+
+  #game {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+  }
+
+  #header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  #header .logo {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    letter-spacing: 3px;
+    background: linear-gradient(135deg, var(--orange), var(--yellow));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+
+  #header .sub {
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-top: 4px;
+  }
+
+  #progress-wrap {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #progress-bar-bg {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  #progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--orange), var(--yellow));
+    border-radius: 99px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+
+  #progress-label {
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+    min-width: 60px;
+    text-align: right;
+  }
+
+  #passage-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    animation: fadeSlide 0.35s ease;
+  }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .passage-tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--orange);
+    border: 1px solid rgba(255,107,0,0.3);
+    border-radius: 99px;
+    padding: 2px 10px;
+    margin-bottom: 1rem;
+  }
+
+  .passage-tag.ending { color: var(--yellow); border-color: rgba(255,214,0,0.3); }
+  .passage-tag.action { color: var(--teal); border-color: rgba(0,229,255,0.3); }
+
+  #passage-title {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
+    letter-spacing: 1.5px;
+    color: var(--yellow);
+    margin-bottom: 1rem;
+    line-height: 1.15;
+  }
+
+  #passage-text {
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  #passage-text p { margin-bottom: 0.9rem; }
+  #passage-text p:last-child { margin-bottom: 0; }
+
+  #choices {
+    margin-top: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .choice-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+    position: relative;
+    padding-left: 44px;
+  }
+
+  .choice-btn::before {
+    content: '▶️';
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--orange);
+    font-size: 10px;
+    transition: transform 0.2s;
+  }
+
+  .choice-btn:hover {
+    border-color: var(--orange);
+    background: rgba(255,107,0,0.08);
+    color: var(--yellow);
+    transform: translateX(4px);
+  }
+
+  .choice-btn:hover::before { transform: translateY(-50%) translateX(3px); }
+  .choice-btn:active { transform: translateX(2px) scale(0.99); }
+
+  .ending-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 1.25rem;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .ending-badge.good    { background: rgba(57,255,20,0.1);  color: var(--green);  border: 1px solid rgba(57,255,20,0.25); }
+  .ending-badge.neutral { background: rgba(0,229,255,0.1);  color: var(--teal);   border: 1px solid rgba(0,229,255,0.25); }
+  .ending-badge.hollow  { background: rgba(255,59,92,0.1);  color: var(--red);    border: 1px solid rgba(255,59,92,0.25); }
+  .ending-badge.endless { background: rgba(255,214,0,0.1);  color: var(--yellow); border: 1px solid rgba(255,214,0,0.25); }
+
+  .ending-icon { font-size: 20px; }
+
+  #restart-btn {
+    margin-top: 1.5rem;
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--orange), #FF4500);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-family: 'Bangers', cursive;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  #restart-btn:hover { filter: brightness(1.15); transform: translateY(-2px); }
+
+  #breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 1rem;
+    min-height: 22px;
+  }
+
+  .crumb {
+    font-size: 10px;
+    color: var(--muted);
+    background: rgba(255,255,255,0.04);
+    border-radius: 99px;
+    padding: 2px 8px;
+  }
+
+  #stats {
+    display: flex;
+    gap: 16px;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  .stat { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+  .stat-icon { font-size: 14px; }
+  .stat-val { color: var(--yellow); font-weight: 700; }
+
+  @keyframes spin3d {
+    from { transform: rotateY(0deg); }
+    to   { transform: rotateY(360deg); }
+  }
+  .trophy-spin { display: inline-block; animation: spin3d 1.5s linear infinite; }
 </style>
 </head>
 <body>
+
 <div id="game">
   <div id="header">
     <div class="logo">CTR: Road to Glory</div>
     <div class="sub">A Crash Team Racing Adventure · Interactive Story</div>
   </div>
+
   <div id="progress-wrap">
     <div id="progress-bar-bg"><div id="progress-bar-fill"></div></div>
     <div id="progress-label">Passage 1</div>
   </div>
+
   <div id="breadcrumb"></div>
   <div id="passage-card"></div>
 </div>
+
 <script>
-const story={start:"intro",passages:{intro:{title:"An Alien Ultimatum",tag:"opening",text:'<p>A massive spacecraft casts a shadow over Earth\\'s greatest racetrack. The speakers crackle. A rasping, arrogant voice fills the air:</p><p><em>"I am Nitros Oxide — the fastest racer in the galaxy. If no one on this mudball planet can defeat me, I will pave it flat and turn it into the galaxy\\'s largest parking lot."</em></p><p>The crowd goes silent. Then, a kart engine roars to life. <strong>Yours.</strong></p><p>You grip the wheel. The trophy cup glints in the alien light overhead. If someone\\'s going to save Earth, it might as well be you.</p>',choices:[{text:"Enter the racing tournament",to:"hub_world"}]},hub_world:{title:"The Hub Worlds Await",tag:"decision",text:'<p>You arrive at the racing hub — a crossroads connecting four distinct worlds: the sandy Gem Stone Valley, the icy Polar Pass, the spooky Spooky Speedway, and the volcanic Hot Air Skyway.</p><p>Each world holds <strong>trophy races</strong>, <strong>relic challenges</strong>, and <strong>hidden tokens</strong>. You need trophies to unlock the final race against Oxide — but you could also aim for total mastery.</p><p>Two racers approach you. Polar speaks first: <em>"You\\'ve got enough trophies to challenge Oxide if you win just the main races. Fast track to glory."</em></p><p>Pura pads up: <em>"Or you could earn every relic and token. When you face Oxide, you\\'ll be unbeatable."</em></p><p><strong>How will you approach the challenge?</strong></p>',choices:[{text:"Race quickly — collect only what I need to face Oxide",to:"trophy_focus"},{text:"Complete every challenge — relics, tokens, everything",to:"completionist_start"}]},trophy_focus:{title:"Full Speed Ahead",tag:"action",text:'<p>You push your kart to its limit across the main tracks. Gem Stone Valley — done. Polar Pass — done. You\\'re flying through the races, collecting trophies at every finish line.</p><p>There are relic hourglasses sitting on pedestals as you cross each track — tempting, glittering — but you zoom past them. No time.</p><p>By the time you clear Hot Air Skyway, you have <strong>enough trophies to unlock Oxide Station</strong>. The final gate swings open.</p><p>You pause at the entrance. Your kart is fast — you\\'ve proven that. But is fast enough... enough?</p>',choices:[{text:"Head straight to Oxide Station — challenge him now",to:"oxide_rush"},{text:"Do a few relic challenges before the final race",to:"trophy_side_relics"}],addStats:{trophies:4}},oxide_rush:{title:"The Gates of Oxide Station",tag:"action",text:'<p>Oxide Station is unlike any track you\\'ve seen — zero gravity loops, laser grid shortcuts, a finish line floating in orbit.</p><p>Nitros Oxide lowers himself from his personal racer and looks at you with contempt. <em>"You came directly? No relics? No tokens? You\\'re either confident or foolish."</em></p><p>The race begins. You\\'re keeping pace — barely. Oxide uses every dirty trick: missiles, shield boosts, a devastating turbo blast on the final straight.</p><p>You\\'re in second place heading into the last corner. You have one move left.</p>',choices:[{text:"Risk everything on a daring power slide to overtake",to:"ending_hollow"},{text:"Play it safe and accept second place",to:"oxide_second"}],addStats:{trophies:1}},oxide_second:{title:"A Respectable Second",tag:"action",text:'<p>You cross the finish line second. Oxide wins — but barely. He floats down, grinning.</p><p><em>"You are... surprisingly capable for a mud-dweller. But second is second."</em></p><p>He begins to power up his parking lot beam. You have seconds to decide.</p>',choices:[{text:"Demand a rematch immediately",to:"ending_hollow"},{text:"Accept defeat and go train harder",to:"trophy_side_relics"}]},trophy_side_relics:{title:"Last-Minute Training",tag:"action",text:'<p>You pull back from Oxide Station and return to the tracks you blazed through. The relic trials are brutal — each one a time attack where you smash numbered crates in order against a punishing clock.</p><p>You fail the first relic run three times. Then something clicks. You learn the track\\'s rhythm — where to slide, where to boost, where to cut.</p><p>You earn <strong>three sapphire relics</strong>. You also find a hidden wumpa token cache near a waterfall in Gem Stone Valley — a burst of confidence you didn\\'t know you needed.</p><p>Ready. You turn back toward Oxide Station.</p>',choices:[{text:"Face Nitros Oxide — you\\'re prepared now",to:"oxide_prepared"}],addStats:{relics:3,tokens:1}},oxide_prepared:{title:"Back at Oxide Station",tag:"action",text:'<p>This time Oxide seems surprised. <em>"You went back to train? Interesting."</em></p><p>The race starts and you feel the difference immediately. Your lines are tighter. Your slides are smoother. When Oxide launches a missile, you cut low and dodge without losing pace.</p><p>You hit the final straight neck-and-neck. The finish line appears. You throw everything into one last turbo boost —</p>',choices:[{text:"Cross the finish line first!",to:"ending_narrow"}]},completionist_start:{title:"The Long Road to Mastery",tag:"action",text:'<p>You decide: if you\\'re going to save Earth, you\\'re going to do it properly.</p><p>You dominate the trophy races, then revisit each track for relic trials — smashing crates against the clock until your times are gold.</p><p>Deep in Polar Pass, you discover icy shortcuts. In Spooky Speedway, a ghost driver gives you a cryptic hint: <em>"He always drifts left on the final turn. Always."</em></p><p>You\\'re building something most racers never achieve — <strong>total understanding</strong> of every track.</p>',choices:[{text:"Push into the Wumpa Coin token hunts",to:"token_hunt"},{text:"Take on the CTR Challenge — collect C, T, R letters in each race",to:"ctr_challenge"}],addStats:{trophies:4,relics:5}},token_hunt:{title:"The Token Trails",tag:"action",text:'<p>The colored gem tokens are scattered across each world — some obvious, some hidden behind false walls and underwater tunnels.</p><p>In Gem Stone Valley, you find a glittering red gem beneath a bridge nobody uses. In Hot Air Skyway, a purple gem floats at the edge of a death-drop — you snatch it mid-air off a ramp.</p><p>You\\'re having real fun — not just racing to win, but racing to <em>explore</em>.</p>',choices:[{text:"Now tackle the CTR Challenge letters",to:"ctr_challenge"},{text:"You feel ready — go face Oxide",to:"oxide_mastery_approach"}],addStats:{tokens:8}},ctr_challenge:{title:"C · T · R",tag:"action",text:'<p>The CTR Challenge demands you collect letters C, T, and R across each track — while still winning. One missed letter means starting over.</p><p>The first track takes eleven tries. By the third, you\\'ve memorized every letter\\'s location and the fastest route between them.</p><p>You also face the <strong>boss laps</strong> — Ripper Roo, Papu Papu, Komodo Joe. Brutal. You beat them all.</p><p>By the time you hold every CTR coin, you\\'re not just fast. You\\'re <em>precise.</em></p>',choices:[{text:"You\\'ve mastered everything — face Oxide",to:"oxide_mastery_approach"},{text:"The Gem Cups remain — bonus races for true completionists",to:"gem_cups"}],addStats:{trophies:2,tokens:4}},gem_cups:{title:"The Gem Cups",tag:"decision",text:'<p>The Gem Cups are secret circuits unlocked only after earning specific token combinations. You\\'ve earned them.</p><p>The first track crosses three biomes: icy mountain into jungle canyon into volcanic straightaway. You race it perfectly.</p><p>Aku Aku\\'s voice crackles over your radio: <em>"You\\'ve seen everything this world has to offer. Oxide is waiting — but the choice is yours."</em></p>',choices:[{text:"Head to Oxide Station — you\\'re truly ready",to:"oxide_mastery_approach"},{text:"Race the Gem Cups again — push your times further",to:"ending_endless"}],addStats:{trophies:2,relics:2,tokens:3}},oxide_mastery_approach:{title:"The Champion Arrives",tag:"action",text:'<p>You pull into Oxide Station. The alien studies his data pad, then you, then his pad again.</p><p><em>"You have every trophy. Every relic. Every token. The CTR Challenge..."</em> He narrows his eyes. <em>"You are not a mud-dweller. You are something else entirely."</em></p><p>The race begins. You know his weakness — that leftward drift on the final corner. You know every shortcut, every boost pad, every risky line.</p><p>Oxide is still fast. He\\'s the fastest in the galaxy. But for the first time, he\\'s not the most prepared racer on the track.</p>',choices:[{text:"Race Oxide — show him what a true champion looks like",to:"ending_true_champion"}]},ending_hollow:{title:"Ending A: Hollow Victory",tag:"ending",endingType:"hollow",endingLabel:"Hollow Victory",endingIcon:"🏁",text:'<p>You cross the finish line. First place. The crowd cheers. Oxide powers down his parking lot beam.</p><p><em>"You... won. Inconceivable. Earth is... yours."</em> He rockets back to space.</p><p>The trophy is real. The victory is real. But you remember the relics you skipped, the tokens you never hunted, the CTR letters you never chased.</p><p>You saved Earth. But as the cheering fades, you look back toward the hub worlds — wondering what you missed.</p><p><em>Earth is saved. But your story feels... unfinished.</em></p>',isEnding:true},ending_narrow:{title:"Ending B: Narrow Champion",tag:"ending",endingType:"neutral",endingLabel:"Narrow Champion",endingIcon:"⚡",text:'<p>By the thinnest margin — half a kart-length — you cross the line ahead of Nitros Oxide.</p><p>He climbs out and extends a clawed hand. <em>"You came back and improved. I respect that. Few bother."</em></p><p>Earth is safe. You\\'re declared a champion. Polar waves from the ice. Pura purrs with satisfaction.</p><p>You didn\\'t complete everything — but you learned, adapted, and came back stronger when it counted.</p><p><em>Earth is saved. You became stronger when it mattered most.</em></p>',isEnding:true},ending_true_champion:{title:"Ending C: True Champion",tag:"ending",endingType:"good",endingLabel:"True Champion",endingIcon:"🏆",text:'<p>You win by three full seconds — an eternity in racing.</p><p>Oxide removes his helmet. He\\'s smiling. <em>"In ten thousand years of racing the galaxy, I have never seen a competitor prepare so thoroughly. You are not merely fast. You are a <strong>champion</strong>."</em></p><p>He bows and departs peacefully. The hub worlds erupt. Every racer lines the track as you take your victory lap.</p><p>You didn\\'t just save Earth. You proved that thoroughness and mastery are their own reward.</p><p><em>Earth is saved. And you are its greatest racer.</em></p>',isEnding:true},ending_endless:{title:"Ending D: Endless Challenger",tag:"ending",endingType:"endless",endingLabel:"Endless Challenger",endingIcon:"∞",text:'<p>Oxide is still in orbit. His beam is charged but... he\\'s waiting. Watching.</p><p>You run the Gem Cup track again. 0.4 seconds faster. Again. 0.1 more. You find a new line nobody\\'s ever tried.</p><p>Days pass. Earth is technically in danger. But somehow, everyone feels okay watching you chase perfection.</p><p>Even Oxide leans from his spacecraft window to observe. <em>"Fascinating,"</em> he mutters. <em>"They call this... fun."</em></p><p><em>Earth\\'s fate remains unresolved. You are, however, very fast.</em></p>',isEnding:true}}};
-let current=story.start,history=[],stats={trophies:0,relics:0,tokens:0},passageCount=0;
-function goTo(id){if(history.length>0){const prev=story.passages[current];history.push(prev.title||current);}current=id;render();}
-function render(){const p=story.passages[current];if(!p)return;passageCount++;
-if(p.addStats){stats.trophies+=p.addStats.trophies||0;stats.relics+=p.addStats.relics||0;stats.tokens+=p.addStats.tokens||0;}
-const prog=Math.min(100,Math.round((passageCount/10)*100));
-document.getElementById('progress-bar-fill').style.width=prog+'%';
-document.getElementById('progress-label').textContent='Passage '+passageCount;
-const bc=document.getElementById('breadcrumb');
-if(history.length>0){bc.innerHTML=history.slice(-4).map(h=>'<span class="crumb">'+h+'</span>').join('<span style="color:var(--border);font-size:10px">›</span>');}
-let tagClass='';const tag=p.tag||'action';if(tag==='ending')tagClass='ending';else if(tag==='action')tagClass='action';
-let endingBadgeHTML='';
-if(p.isEnding){const typeMap={good:{cls:'good',label:'Best Ending'},neutral:{cls:'neutral',label:'Good Ending'},hollow:{cls:'hollow',label:'Bittersweet Ending'},endless:{cls:'endless',label:'Secret Ending'}};const t=typeMap[p.endingType]||typeMap.neutral;endingBadgeHTML='<div class="ending-badge '+t.cls+'"><span class="ending-icon '+(p.endingType==='good'?'trophy-spin':'')+'">'+(p.endingIcon||'🏁')+'</span><span>'+p.endingLabel+' — '+t.label+'</span></div>';}
-const statsHTML='<div id="stats"><div class="stat"><span class="stat-icon">🏆</span> Trophies: <span class="stat-val">'+stats.trophies+'</span></div><div class="stat"><span class="stat-icon">⏱</span> Relics: <span class="stat-val">'+stats.relics+'</span></div><div class="stat"><span class="stat-icon">💎</span> Tokens: <span class="stat-val">'+stats.tokens+'</span></div></div>';
-let choicesHTML='';
-if(p.isEnding){choicesHTML='<button id="restart-btn" onclick="restart()">▶ PLAY AGAIN</button>';}
-else if(p.choices&&p.choices.length>0){choicesHTML='<div id="choices">'+p.choices.map(c=>'<button class="choice-btn" onclick="goTo(\\''+c.to+'\\')">'+c.text+'</button>').join('')+'</div>';}
-document.getElementById('passage-card').innerHTML='<div class="passage-tag '+tagClass+'">'+tag+'</div><h2 id="passage-title">'+p.title+'</h2>'+endingBadgeHTML+'<div id="passage-text">'+p.text+'</div>'+choicesHTML+statsHTML;
-window.scrollTo({top:0,behavior:'smooth'});}
-function restart(){current=story.start;history=[];stats={trophies:0,relics:0,tokens:0};passageCount=0;document.getElementById('breadcrumb').innerHTML='';document.getElementById('progress-bar-fill').style.width='0%';render();}
-history=[];render();
+const story = {
+  start: "intro",
+  passages: {
+
+    intro: {
+      title: "An Alien Ultimatum",
+      tag: "opening",
+      text: `<p>A massive spacecraft casts a shadow over Earth's greatest racetrack. The speakers crackle. A rasping, arrogant voice fills the air:</p>
+<p><em>"I am Nitros Oxide — the fastest racer in the galaxy. If no one on this mudball planet can defeat me, I will pave it flat and turn it into the galaxy's largest parking lot."</em></p>
+<p>The crowd goes silent. Then, a kart engine roars to life. <strong>Yours.</strong></p>
+<p>You grip the wheel. The trophy cup glints in the alien light overhead. If someone's going to save Earth, it might as well be you.</p>`,
+      choices: [{ text: "Enter the racing tournament", to: "hub_world" }]
+    },
+
+    hub_world: {
+      title: "The Hub Worlds Await",
+      tag: "decision",
+      text: `<p>You arrive at the racing hub — a crossroads connecting four distinct worlds: the sandy Gem Stone Valley, the icy Polar Pass, the spooky Spooky Speedway, and the volcanic Hot Air Skyway.</p>
+<p>Each world holds <strong>trophy races</strong>, <strong>relic challenges</strong>, and <strong>hidden tokens</strong>. You need trophies to unlock the final race against Oxide — but you could also aim for total mastery.</p>
+<p>Two racers approach you. Polar speaks first: <em>"You've got enough trophies to challenge Oxide if you win just the main races. Fast track to glory."</em></p>
+<p>Pura pads up: <em>"Or you could earn every relic and token. When you face Oxide, you'll be unbeatable."</em></p>
+<p><strong>How will you approach the challenge?</strong></p>`,
+      choices: [
+        { text: "Race quickly — collect only what I need to face Oxide", to: "trophy_focus" },
+        { text: "Complete every challenge — relics, tokens, everything", to: "completionist_start" }
+      ]
+    },
+
+    trophy_focus: {
+      title: "Full Speed Ahead",
+      tag: "action",
+      text: `<p>You push your kart to its limit across the main tracks. Gem Stone Valley — done. Polar Pass — done. You're flying through the races, collecting trophies at every finish line.</p>
+<p>There are relic hourglasses sitting on pedestals as you cross each track — tempting, glittering — but you zoom past them. No time.</p>
+<p>By the time you clear Hot Air Skyway, you have <strong>enough trophies to unlock Oxide Station</strong>. The final gate swings open.</p>
+<p>You pause at the entrance. Your kart is fast — you've proven that. But is fast enough... enough?</p>`,
+      choices: [
+        { text: "Head straight to Oxide Station — challenge him now", to: "oxide_rush" },
+        { text: "Do a few relic challenges before the final race", to: "trophy_side_relics" }
+      ],
+      addStats: { trophies: 4 }
+    },
+
+    oxide_rush: {
+      title: "The Gates of Oxide Station",
+      tag: "action",
+      text: `<p>Oxide Station is unlike any track you've seen — zero gravity loops, laser grid shortcuts, a finish line floating in orbit.</p>
+<p>Nitros Oxide lowers himself from his personal racer and looks at you with contempt. <em>"You came directly? No relics? No tokens? You're either confident or foolish."</em></p>
+<p>The race begins. You're keeping pace — barely. Oxide uses every dirty trick: missiles, shield boosts, a devastating turbo blast on the final straight.</p>
+<p>You're in second place heading into the last corner. You have one move left.</p>`,
+      choices: [
+        { text: "Risk everything on a daring power slide to overtake", to: "ending_hollow" },
+        { text: "Play it safe and accept second place", to: "oxide_second" }
+      ],
+      addStats: { trophies: 1 }
+    },
+
+    oxide_second: {
+      title: "A Respectable Second",
+      tag: "action",
+      text: `<p>You cross the finish line second. Oxide wins — but barely. He floats down, grinning.</p>
+<p><em>"You are... surprisingly capable for a mud-dweller. But second is second."</em></p>
+<p>He begins to power up his parking lot beam. You have seconds to decide.</p>`,
+      choices: [
+        { text: "Demand a rematch immediately", to: "ending_hollow" },
+        { text: "Accept defeat and go train harder", to: "trophy_side_relics" }
+      ]
+    },
+
+    trophy_side_relics: {
+      title: "Last-Minute Training",
+      tag: "action",
+      text: `<p>You pull back from Oxide Station and return to the tracks you blazed through. The relic trials are brutal — each one a time attack where you smash numbered crates in order against a punishing clock.</p>
+<p>You fail the first relic run three times. Then something clicks. You learn the track's rhythm — where to slide, where to boost, where to cut.</p>
+<p>You earn <strong>three sapphire relics</strong>. You also find a hidden wumpa token cache near a waterfall in Gem Stone Valley — a burst of confidence you didn't know you needed.</p>
+<p>Ready. You turn back toward Oxide Station.</p>`,
+      choices: [
+        { text: "Face Nitros Oxide — you're prepared now", to: "oxide_prepared" }
+      ],
+      addStats: { relics: 3, tokens: 1 }
+    },
+
+    oxide_prepared: {
+      title: "Back at Oxide Station",
+      tag: "action",
+      text: `<p>This time Oxide seems surprised. <em>"You went back to train? Interesting."</em></p>
+<p>The race starts and you feel the difference immediately. Your lines are tighter. Your slides are smoother. When Oxide launches a missile, you cut low and dodge without losing pace.</p>
+<p>You hit the final straight neck-and-neck. The finish line appears. You throw everything into one last turbo boost —</p>`,
+      choices: [
+        { text: "Cross the finish line first!", to: "ending_narrow" }
+      ]
+    },
+
+    completionist_start: {
+      title: "The Long Road to Mastery",
+      tag: "action",
+      text: `<p>You decide: if you're going to save Earth, you're going to do it properly.</p>
+<p>You dominate the trophy races, then revisit each track for relic trials — smashing crates against the clock until your times are gold.</p>
+<p>Deep in Polar Pass, you discover icy shortcuts. In Spooky Speedway, a ghost driver gives you a cryptic hint: <em>"He always drifts left on the final turn. Always."</em></p>
+<p>You're building something most racers never achieve — <strong>total understanding</strong> of every track.</p>`,
+      choices: [
+        { text: "Push into the Wumpa Coin token hunts", to: "token_hunt" },
+        { text: "Take on the CTR Challenge — collect C, T, R letters in each race", to: "ctr_challenge" }
+      ],
+      addStats: { trophies: 4, relics: 5 }
+    },
+
+    token_hunt: {
+      title: "The Token Trails",
+      tag: "action",
+      text: `<p>The colored gem tokens are scattered across each world — some obvious, some hidden behind false walls and underwater tunnels.</p>
+<p>In Gem Stone Valley, you find a glittering red gem beneath a bridge nobody uses. In Hot Air Skyway, a purple gem floats at the edge of a death-drop — you snatch it mid-air off a ramp.</p>
+<p>You're having real fun — not just racing to win, but racing to <em>explore</em>.</p>`,
+      choices: [
+        { text: "Now tackle the CTR Challenge letters on each track", to: "ctr_challenge" },
+        { text: "You feel ready — go face Oxide", to: "oxide_mastery_approach" }
+      ],
+      addStats: { tokens: 8 }
+    },
+
+    ctr_challenge: {
+      title: "C · T · R",
+      tag: "action",
+      text: `<p>The CTR Challenge demands you collect the letters C, T, and R scattered across each track — while still winning the race. One missed letter means starting over.</p>
+<p>It's the hardest thing you've attempted. The first track takes you eleven tries. The second takes four. By the third, you've memorized every letter's location and the fastest route between them.</p>
+<p>You also face the <strong>boss laps</strong> — Oxide's lieutenants who race you on their home tracks. Ripper Roo's bouncing is maddening. Papu Papu's kart is enormous. Komodo Joe is relentless.</p>
+<p>You beat them all.</p>
+<p>By the time you hold every CTR coin, you're not just fast anymore. You're <em>precise.</em></p>`,
+      choices: [
+        { text: "You've mastered everything — time to face Oxide", to: "oxide_mastery_approach" },
+        { text: "There's still the Gem Cups — extra bonus races for perfect racers", to: "gem_cups" }
+      ],
+      addStats: { trophies: 2, tokens: 4 }
+    },
+
+    gem_cups: {
+      title: "The Gem Cups",
+      tag: "decision",
+      text: `<p>The Gem Cups are bonus cups unlocked only by true completionists. These tracks aren't in the main hub — they're secret circuits only accessible after earning specific token combinations.</p>
+<p>You've earned them.</p>
+<p>The first Gem Cup track is extraordinary — a course built across three different hub world biomes stitched together: icy mountain into jungle canyon into volcanic straightaway.</p>
+<p>You race it perfectly. The crowd — a crowd you didn't even know was watching — goes wild.</p>
+<p>Aku Aku's voice crackles over your kart radio: <em>"You've done it. You've seen everything this world has to offer. Oxide is waiting, but the choice is yours."</em></p>`,
+      choices: [
+        { text: "Head to Oxide Station — you're truly ready", to: "oxide_mastery_approach" },
+        { text: "Race the Gem Cups again — you want to push your times even further", to: "ending_endless" }
+      ],
+      addStats: { trophies: 2, relics: 2, tokens: 3 }
+    },
+
+    oxide_mastery_approach: {
+      title: "The Champion Arrives",
+      tag: "action",
+      text: `<p>You pull into Oxide Station. The alien studies his data pad, then you, then his pad again.</p>
+<p><em>"You have every trophy. Every relic. Every token. The CTR Challenge..."</em> He narrows his eyes. <em>"You are not a mud-dweller. You are something else entirely."</em></p>
+<p>The race begins. You know his weakness — that leftward drift on the final corner. You know every shortcut, every boost pad, every risky line.</p>
+<p>Oxide is still fast. He's the fastest in the galaxy. But for the first time, he's not the most prepared racer on the track.</p>`,
+      choices: [
+        { text: "Race Oxide — show him what a true champion looks like", to: "ending_true_champion" }
+      ]
+    },
+
+    ending_hollow: {
+      title: "Ending A: Hollow Victory",
+      tag: "ending",
+      endingType: "hollow",
+      endingLabel: "Hollow Victory",
+      endingIcon: "🏁",
+      text: `<p>You cross the finish line. First place. The crowd cheers. Oxide powers down his parking lot beam.</p>
+<p><em>"You... won. Inconceivable. Earth is... yours."</em> He rockets back to space.</p>
+<p>The trophy is real. The victory is real. But you remember the relics you skipped, the tokens you never hunted, the CTR letters you never chased.</p>
+<p>You saved Earth. But as the cheering fades, you look back toward the hub worlds — wondering what you missed.</p>
+<p><em>Earth is saved. But your story feels... unfinished.</em></p>`,
+      isEnding: true
+    },
+
+    ending_narrow: {
+      title: "Ending B: Narrow Champion",
+      tag: "ending",
+      endingType: "neutral",
+      endingLabel: "Narrow Champion",
+      endingIcon: "⚡",
+      text: `<p>By the thinnest margin — half a kart-length — you cross the line ahead of Nitros Oxide.</p>
+<p>He climbs out and extends a clawed hand. <em>"You came back and improved. I respect that. Few bother."</em></p>
+<p>Earth is safe. You're declared a champion. Polar waves from the ice. Pura purrs with satisfaction.</p>
+<p>You didn't complete everything — but you learned, adapted, and came back stronger when it counted.</p>
+<p><em>Earth is saved. You became stronger when it mattered most.</em></p>`,
+      isEnding: true
+    },
+
+    ending_true_champion: {
+      title: "Ending C: True Champion",
+      tag: "ending",
+      endingType: "good",
+      endingLabel: "True Champion",
+      endingIcon: "🏆",
+      text: `<p>You win by three full seconds — an eternity in racing.</p>
+<p>Oxide removes his helmet. He's smiling. <em>"In ten thousand years of racing the galaxy, I have never seen a competitor prepare so thoroughly. You are not merely fast. You are a <strong>champion</strong>."</em></p>
+<p>He bows and departs peacefully. The hub worlds erupt. Every racer lines the track as you take your victory lap.</p>
+<p>You didn't just save Earth. You proved that thoroughness and mastery are their own reward.</p>
+<p><em>Earth is saved. And you are its greatest racer.</em></p>`,
+      isEnding: true
+    },
+
+    ending_endless: {
+      title: "Ending D: Endless Challenger",
+      tag: "ending",
+      endingType: "endless",
+      endingLabel: "Endless Challenger",
+      endingIcon: "∞",
+      text: `<p>Oxide is still in orbit. His beam is charged but... he's waiting. Watching.</p>
+<p>You run the Gem Cup track again. 0.4 seconds faster. Again. 0.1 more. You find a new line nobody's ever tried.</p>
+<p>Days pass. Earth is technically in danger. But somehow, everyone feels okay watching you chase perfection.</p>
+<p>Even Oxide leans from his spacecraft window to observe. <em>"Fascinating,"</em> he mutters. <em>"They call this... fun."</em></p>
+<p><em>Earth's fate remains unresolved. You are, however, very fast.</em></p>`,
+      isEnding: true
+    }
+  }
+};
+
+let current = story.start;
+let history = [];
+let stats = { trophies: 0, relics: 0, tokens: 0 };
+let passageCount = 0;
+
+function goTo(id) {
+  if (history.length > 0) {
+    const prev = story.passages[current];
+    history.push(prev.title || current);
+  }
+  current = id;
+  render();
+}
+
+function render() {
+  const p = story.passages[current];
+  if (!p) return;
+  passageCount++;
+
+  if (p.addStats) {
+    stats.trophies += p.addStats.trophies || 0;
+    stats.relics   += p.addStats.relics   || 0;
+    stats.tokens   += p.addStats.tokens   || 0;
+  }
+
+  const prog = Math.min(100, Math.round((passageCount / 10) * 100));
+  document.getElementById('progress-bar-fill').style.width = prog + '%';
+  document.getElementById('progress-label').textContent = ⁠ Passage ${passageCount} ⁠;
+
+  const bc = document.getElementById('breadcrumb');
+  if (history.length > 0) {
+    bc.innerHTML = history.slice(-4).map(h =>
+      ⁠ <span class="crumb">${h}</span> ⁠
+    ).join('<span style="color:var(--border);font-size:10px">›</span>');
+  }
+
+  const tag = p.tag || 'action';
+  let tagClass = (tag === 'ending') ? 'ending' : (tag === 'action') ? 'action' : '';
+
+  let endingBadgeHTML = '';
+  if (p.isEnding) {
+    const typeMap = {
+      good:    { cls: 'good',    label: 'Best Ending' },
+      neutral: { cls: 'neutral', label: 'Good Ending' },
+      hollow:  { cls: 'hollow',  label: 'Bittersweet Ending' },
+      endless: { cls: 'endless', label: 'Secret Ending' }
+    };
+    const t = typeMap[p.endingType] || typeMap.neutral;
+    endingBadgeHTML = `
+      <div class="ending-badge ${t.cls}">
+        <span class="ending-icon ${p.endingType === 'good' ? 'trophy-spin' : ''}">${p.endingIcon || '🏁'}</span>
+        <span>${p.endingLabel} — ${t.label}</span>
+      </div>`;
+  }
+
+  const statsHTML = `
+    <div id="stats">
+      <div class="stat"><span class="stat-icon">🏆</span> Trophies: <span class="stat-val">${stats.trophies}</span></div>
+      <div class="stat"><span class="stat-icon">⏱</span> Relics: <span class="stat-val">${stats.relics}</span></div>
+      <div class="stat"><span class="stat-icon">💎</span> Tokens: <span class="stat-val">${stats.tokens}</span></div>
+    </div>`;
+
+  let choicesHTML = '';
+  if (p.isEnding) {
+    choicesHTML = ⁠ <button id="restart-btn" onclick="restart()">▶️ PLAY AGAIN</button> ⁠;
+  } else if (p.choices && p.choices.length > 0) {
+    choicesHTML = ⁠ <div id="choices"> ⁠ +
+      p.choices.map(c =>
+        ⁠ <button class="choice-btn" onclick="goTo('${c.to}')">${c.text}</button> ⁠
+      ).join('') +
+    ⁠ </div> ⁠;
+  }
+
+  document.getElementById('passage-card').innerHTML = `
+    <div class="passage-tag ${tagClass}">${tag}</div>
+    <h2 id="passage-title">${p.title}</h2>
+    ${endingBadgeHTML}
+    <div id="passage-text">${p.text}</div>
+    ${choicesHTML}
+    ${statsHTML}
+  `;
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restart() {
+  current = story.start;
+  history = [];
+  stats = { trophies: 0, relics: 0, tokens: 0 };
+  passageCount = 0;
+  document.getElementById('breadcrumb').innerHTML = '';
+  document.getElementById('progress-bar-fill').style.width = '0%';
+  render();
+}
+
+history = [];
+render();
 </script>
 </body>
-</html>`}
-        style={{width:'100%', height:'100vh', border:'none'}}
-        title="CTR Story"
-      />
-    </div>
-  );
-}
+</html>
